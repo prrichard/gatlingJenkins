@@ -12,7 +12,7 @@ import scala.util.Random
 class VideoGameFullTest extends Simulation {
 
   val httpConf = http
-    .baseUrl("http://localhost:8080/app/")
+    .baseUrl("http://video-game-db.eu-west-2.elasticbeanstalk.com/app/")
     .header("Accept", "application/json")
 
   /*** Variables ***/
@@ -108,6 +108,10 @@ class VideoGameFullTest extends Simulation {
   )
     .protocols(httpConf)
     .maxDuration(testDuration seconds)
+      .assertions(
+        global.responseTime.max.lt(150),
+        global.successfulRequests.percent.gt(99)
+      )
 
   /*** After ***/
   after {
